@@ -95,6 +95,79 @@ RNF05. **Escalabilidad**: Soportar hasta 500 usuarios concurrentes
 
 **HU07**: Como contratista, quiero consultar el historial de un ambiente para 
           ver quién lo ha usado.
-```
 
+# Modelo de datos para documentar
 
+## Diagrama de arquitectura general
+
+<img width="240" height="462" alt="image" src="https://github.com/user-attachments/assets/3295f57d-2e56-4c4f-9129-73ec4d9b06cf" />
+
+## Modelado de datos
+
+<img width="283" height="478" alt="image" src="https://github.com/user-attachments/assets/ef474dab-c29b-49e7-a37d-fe4bf36228be" />
+
+# Modelo de datos para documentar
+
+Entidades principales:
+
+1. Usuario
+   - id
+   - nombre
+   - tipo_usuario (Contratista/Instructor/Supervisor/Admin)
+   - numero_identidad
+   - telefono
+   - correo
+   - contraseña (hash)
+
+2. Ambiente
+   - id
+   - codigo (ej: B04)
+   - nombre
+   - capacidad
+   - estado (Disponible/Ocupado/Mantenimiento)
+
+3. ItemInventario
+   - id
+   - ambiente_id (FK)
+   - tipo_item (Silla/Mesa/Computador/Mouse/Teclado)
+   - cantidad_esperada
+   - cantidad_actual
+   - estado
+
+4. Asignacion
+   - id
+   - ambiente_id (FK)
+   - instructor_id (FK - Usuario)
+   - contratista_entrega_id (FK - Usuario)
+   - supervisor_id (FK - Usuario)
+   - fecha
+   - hora_recepcion
+   - hora_devolucion
+   - observaciones
+   - firma_contratista (texto o imagen base64)
+   - firma_instructor (texto o imagen base64)
+   - firma_supervisor (texto o imagen base64)
+   - estado (Activa/Cerrada)
+
+5. HorarioAmbiente
+   - id
+   - ambiente_id (FK)
+   - instructor_id (FK)
+   - dia_semana
+   - hora_inicio
+   - hora_fin
+   - programa_formacion
+
+6. Novedad
+   - id
+   - asignacion_id (FK)
+   - descripcion
+   - fecha_reporte
+   - estado (Pendiente/Resuelta)
+
+Relaciones:
+- Un Ambiente tiene muchos ItemInventario (1:N)
+- Un Ambiente tiene muchas Asignaciones (1:N)
+- Un Usuario (Instructor) tiene muchas Asignaciones (1:N)
+- Una Asignación tiene muchas Novedades (1:N)
+- Un Ambiente tiene muchos HorarioAmbiente (1:N)
